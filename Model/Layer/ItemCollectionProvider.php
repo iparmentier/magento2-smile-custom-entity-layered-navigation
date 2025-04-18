@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer;
 
 use Magento\Eav\Api\Data\AttributeSetInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use Smile\CustomEntity\Model\ResourceModel\CustomEntity\Collection as CustomEntityCollection;
 use Smile\CustomEntity\Model\ResourceModel\CustomEntity\CollectionFactory as CustomEntityCollectionFactory;
 use Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\ItemCollectionProviderInterface;
@@ -24,16 +25,24 @@ use Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\ItemCollectionProvide
 class ItemCollectionProvider implements ItemCollectionProviderInterface
 {
     /**
+    * @var StoreManagerInterface
+    */
+    private StoreManagerInterface $storeManager;
+
+    /**
      * @var CustomEntityCollectionFactory
      */
     private CustomEntityCollectionFactory $entityCollectionFactory;
 
     /**
+     * @param StoreManagerInterface $storeManager
      * @param CustomEntityCollectionFactory $entityCollectionFactory
      */
     public function __construct(
+        StoreManagerInterface $storeManager,
         CustomEntityCollectionFactory $entityCollectionFactory
     ) {
+        $this->storeManager = $storeManager;
         $this->entityCollectionFactory = $entityCollectionFactory;
     }
 
@@ -48,5 +57,20 @@ class ItemCollectionProvider implements ItemCollectionProviderInterface
         $collection->addIsActiveFilter();
 
         return $collection;
+    }
+
+    /**
+     * Return store id.
+     *
+     * If store id is underfined for category return current active store id
+     *
+     * @return int
+     */
+    public function getStoreId()
+    {
+        if ($this->hasData('store_id')) {
+            return (int)$this->_getData('store_id');
+        }
+        return (int)$this->storeManager->getStore()->getId();
     }
 }

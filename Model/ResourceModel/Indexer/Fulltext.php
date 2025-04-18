@@ -1,7 +1,16 @@
 <?php
 /**
- * Copyright © Amadeco. All rights reserved.
- * See LICENSE for license details.
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/OSL-3.0
+ *
+ * @category  Amadeco
+ * @package   Amadeco_SmileCustomEntityLayeredNavigation
+ * @copyright Copyright (c) Amadeco (https://www.amadeco.fr) - Ilan Parmentier
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 declare(strict_types=1);
 
@@ -30,7 +39,7 @@ class Fulltext
     /**
      * @var string Index table name - IMPORTANT: Make sure this matches db_schema.xml exactly
      */
-    private string $mainTable = 'amadeco_smile_custom_entity_set_idx';
+    private string $mainTable = 'amadeco_custom_entity_index_eav_idx';
 
     /**
      * @var ResourceConnection

@@ -1,7 +1,16 @@
 <?php
 /**
- * Copyright © Amadeco. All rights reserved.
- * See LICENSE for license details.
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/OSL-3.0
+ *
+ * @category  Amadeco
+ * @package   Amadeco_SmileCustomEntityLayeredNavigation
+ * @copyright Copyright (c) Amadeco (https://www.amadeco.fr) - Ilan Parmentier
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 declare(strict_types=1);
 
@@ -66,28 +75,23 @@ class Layer
     public function getBaseSelectForFacets(int $storeId, int $attributeSetId, ?int $excludeAttributeId = null): ?Select
     {
         $connection = $this->resourceConnection->getConnection();
-        $indexTable = $this->resourceConnection->getTableName('amadeco_smile_custom_entity_set_idx');
+        $indexTable = $this->resourceConnection->getTableName('amadeco_custom_entity_index_eav_idx');
         $entityTable = $this->resourceConnection->getTableName('smile_custom_entity');
 
-        // Vérifier que la table d'index existe
         if (!$connection->isTableExists($indexTable)) {
             return null;
         }
 
-        // Obtenir les filtres appliqués
         $appliedFilters = $this->state->getFiltersData(); // ['attribute_id' => value(s), ...]
 
-        // Supprimer le filtre d'attribut exclu si on calcule les facettes pour celui-ci
         if ($excludeAttributeId !== null && isset($appliedFilters[$excludeAttributeId])) {
             unset($appliedFilters[$excludeAttributeId]);
         }
 
-        // Créer une requête de base pour obtenir les entités de l'attributeSet actuel
         $select = $connection->select();
         $select->from(['e' => $entityTable], ['entity_id'])
             ->where('e.attribute_set_id = ?', $attributeSetId);
 
-        // Ajouter la condition pour les entités actives
         $select->joinLeft(
             ['ea' => $this->resourceConnection->getTableName('smile_custom_entity_int')],
             "e.entity_id = ea.entity_id AND ea.attribute_id = (
@@ -100,19 +104,15 @@ class Layer
         )
         ->where('ea.value = 1');
 
-        // Si aucun filtre n'est appliqué, retourner la requête de base
         if (empty($appliedFilters)) {
             return $select;
         }
 
-        // Pour chaque filtre appliqué, ajouter une jointure avec la table d'index
         $aliasCounter = 0;
         foreach ($appliedFilters as $attributeId => $value) {
             $alias = 'filter_' . $aliasCounter++;
 
-            // Construire la condition de jointure en fonction du type de valeur (simple ou multiple)
             if (is_array($value)) {
-                // Pour les valeurs multiples (comme dans les multiselect)
                 $joinConditions = [];
                 foreach ($value as $singleValue) {
                     $joinConditions[] = $connection->quoteInto(
@@ -131,7 +131,6 @@ class Layer
                     implode(' OR ', $joinConditions)
                 );
             } else {
-                // Pour les valeurs simples
                 $joinCondition = sprintf(
                     "%s.entity_id = e.entity_id AND %s.attribute_id = %d AND %s.store_id = %d AND %s",
                     $alias,
@@ -143,7 +142,6 @@ class Layer
                 );
             }
 
-            // Ajouter la jointure
             $select->joinInner(
                 [$alias => $indexTable],
                 $joinCondition,

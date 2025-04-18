@@ -20,8 +20,6 @@ use Smile\CustomEntity\Controller\Set\View;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Page\Config as PageConfig;
 use Magento\Framework\View\Result\Page;
-use Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer;
-use Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\Resolver as LayerResolver;
 
 /**
  * Plugin to set NOINDEX,FOLLOW meta robots on filtered pages
@@ -39,23 +37,15 @@ class MetaRobotsPlugin
     private PageConfig $pageConfig;
 
     /**
-     * @var LayerResolver
-     */
-    private LayerResolver $layerResolver;
-
-    /**
      * @param RequestInterface $request
      * @param PageConfig $pageConfig
-     * @param LayerResolver $layerResolver
      */
     public function __construct(
         RequestInterface $request,
-        PageConfig $pageConfig,
-        LayerResolver $layerResolver
+        PageConfig $pageConfig
     ) {
         $this->request = $request;
         $this->pageConfig = $pageConfig;
-        $this->layerResolver = $layerResolver;
     }
 
     /**
@@ -99,10 +89,9 @@ class MetaRobotsPlugin
     private function hasAppliedFilters($resultPage): bool
     {
         $state = $resultPage->getLayout()->getBlock('set.layer.state');
-        if ($state->getActiveFilters()) {
+        if ($state && $state->getActiveFilters()) {
             return true;
         }
-
         return false;
     }
 }

@@ -34,7 +34,7 @@ class Attribute extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     protected function _construct()
     {
-        $this->_init('amadeco_smile_custom_entity_set_idx', 'entity_id');
+        $this->_init('amadeco_custom_entity_index_eav_idx', 'entity_id');
     }
 
     /**

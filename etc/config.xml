@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/OSL-3.0
+ *
+ * @category  Amadeco
+ * @package   Amadeco_SmileCustomEntityLayeredNavigation
+ * @copyright Copyright (c) Amadeco (https://www.amadeco.fr) - ILan Parmentier
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <custom_entity>
+            <storefront>
+                <list_mode>grid-list</list_mode>
+                <grid_per_page_values>20,36,52</grid_per_page_values>
+                <grid_per_page>20</grid_per_page>
+                <list_per_page_values>20,36,52</list_per_page_values>
+                <list_per_page>20</list_per_page>
+                <list_allow_all>1</list_allow_all>
+                <default_sort_by>created_at</default_sort_by>
+            </storefront>
+            <layered_navigation>
+                <display_entity_count>1</display_entity_count>
+            </layered_navigation>
+        </custom_entity>
+    </default>
+</config>

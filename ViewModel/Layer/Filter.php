@@ -14,37 +14,37 @@
  */
 declare(strict_types=1);
 
-namespace Amadeco\SmileCustomEntityLayeredNavigation\Model\Indexer\CustomEntity\Layered\Action;
+namespace Amadeco\SmileCustomEntityLayeredNavigation\ViewModel\Layer;
 
-use Amadeco\SmileCustomEntityLayeredNavigation\Model\ResourceModel\Indexer\Fulltext as ResourceIndexer;
-use Psr\Log\LoggerInterface;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Amadeco\SmileCustomEntityLayeredNavigation\Helper\SetList;
 
 /**
- * Class Full reindex action
+ * View model for layered navigation filters
  */
-class Full
+class Filter implements ArgumentInterface
 {
     /**
-     * @var ResourceIndexer
+     * @var SetList
      */
-    private $resourceIndexer;
+    private SetList $setListHelper;
 
     /**
-     * @param ResourceIndexer $resourceIndexer
+     * @param SetList $setListHelper
      */
     public function __construct(
-        ResourceIndexer $resourceIndexer
+        SetList $setListHelper
     ) {
-        $this->resourceIndexer = $resourceIndexer;
+        $this->setListHelper = $setListHelper;
     }
 
     /**
-     * Execute full indexation
+     * Check if should display set count in layered navigation
      *
-     * @return void
+     * @return bool
      */
-    public function execute(): void
+    public function shouldDisplayEntityCountOnLayer(): bool
     {
-        $this->resourceIndexer->reindexAll();
+        return true;
     }
 }

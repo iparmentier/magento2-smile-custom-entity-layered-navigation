@@ -1,29 +1,29 @@
 {
-    "amadeco_smile_custom_entity_set_idx": {
+    "smile_custom_entity_eav_attribute": {
         "column": {
-            "idx_id": true,
+            "is_filterable": true,
+            "position": true
+        }
+    },
+    "amadeco_custom_entity_index_eav_idx": {
+        "column": {
+            "index_id": true,
             "entity_id": true,
             "attribute_id": true,
             "store_id": true,
             "value": true
         },
         "index": {
-            "AMADECO_SMILE_CUSTOM_ENTITY_SET_IDX_STORE_ID_ATTRIBUTE_ID_VALUE": true,
-            "AMADECO_SMILE_CUSTOM_ENTT_SET_IDX_ENTT_ID_ATTR_ID_STORE_ID_VAL": true,
-            "AMADECO_SMILE_CUSTOM_ENTITY_SET_IDX_ATTRIBUTE_ID": true,
-            "AMADECO_SMILE_CUSTOM_ENTITY_SET_IDX_STORE_ID": true
+            "AMADECO_CUSTOM_ENTITY_INDEX_EAV_IDX_STORE_ID_ATTRIBUTE_ID_VALUE": true,
+            "AMADECO_CUSTOM_ENTT_IDX_EAV_IDX_ENTT_ID_ATTR_ID_STORE_ID": true,
+            "AMADECO_CUSTOM_ENTITY_INDEX_EAV_IDX_ENTITY_ID": true,
+            "AMADECO_CUSTOM_ENTITY_INDEX_EAV_IDX_ATTRIBUTE_ID": true
         },
         "constraint": {
             "PRIMARY": true,
-            "FK_EB06A3E5B5F9189562DB108B2E632391": true,
-            "AMADECO_SMILE_CUSTOM_ENTT_SET_IDX_ATTR_ID_EAV_ATTR_ATTR_ID": true,
-            "AMADECO_SMILE_CUSTOM_ENTITY_SET_IDX_STORE_ID_STORE_STORE_ID": true
-        }
-    },
-    "smile_custom_entity_eav_attribute": {
-        "column": {
-            "is_filterable": true,
-            "position": true
+            "FK_702DC5B1AC405FA46F10AC37144D6459": true,
+            "AMADECO_CUSTOM_ENTT_IDX_EAV_IDX_ATTR_ID_EAV_ATTR_ATTR_ID": true,
+            "AMADECO_CUSTOM_ENTITY_INDEX_EAV_IDX_STORE_ID_STORE_STORE_ID": true
         }
     }
 }

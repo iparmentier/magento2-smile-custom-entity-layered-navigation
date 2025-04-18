@@ -18,10 +18,14 @@
     xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <attribute name="class" value="page-with-filter"/>
-        <referenceContainer name="custom.entity.additional">
+        <referenceContainer name="custom.entity.set.additional">
             <block class="Amadeco\SmileCustomEntityLayeredNavigation\Block\Navigation" name="set.layer.view" template="Amadeco_SmileCustomEntityLayeredNavigation::layer/view.phtml">
                 <block class="Amadeco\SmileCustomEntityLayeredNavigation\Block\Navigation\State" name="set.layer.state" as="state" />
-                <block class="Amadeco\SmileCustomEntityLayeredNavigation\Block\Navigation\FilterRenderer" name="set.layer.filter" as="renderer" template="Amadeco_SmileCustomEntityLayeredNavigation::layer/filter.phtml"/>
+                <block class="Amadeco\SmileCustomEntityLayeredNavigation\Block\Navigation\FilterRenderer" name="set.layer.filter" as="renderer" template="Amadeco_SmileCustomEntityLayeredNavigation::layer/filter.phtml">
+                    <arguments>
+                        <argument name="entity_layer_view_model" xsi:type="object">Amadeco\SmileCustomEntityLayeredNavigation\ViewModel\Layer\Filter</argument>
+                    </arguments>
+                </block>
             </block>
         </referenceContainer>
         <move element="smile_custom_entity_set_view" destination="smile_custom_entity_set_content" />

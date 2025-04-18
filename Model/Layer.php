@@ -153,7 +153,7 @@ class Layer extends DataObject implements ResetAfterRequestInterface
      * for prepare some index data before getting information
      * about existing indexes
      *
-     * @return \Magento\Catalog\Model\Layer
+     * @return \Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer
      */
     public function apply()
     {

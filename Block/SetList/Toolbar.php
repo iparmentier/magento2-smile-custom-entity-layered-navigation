@@ -58,6 +58,13 @@ class Toolbar extends Template
     protected $_availableOrder = null;
 
     /**
+     * List of available view types
+     *
+     * @var array
+     */
+    protected $_availableMode = [];
+
+    /**
      * Is enable View switcher
      *
      * @var bool
@@ -211,7 +218,14 @@ class Toolbar extends Template
             return $dir;
         }
 
-        $dir = $this->_direction;
+        $directions = ['asc', 'desc'];
+        $dir = is_string($this->toolbarModel->getDirection()) ?
+            strtolower($this->toolbarModel->getDirection()) : '';
+
+        if (!$dir || !in_array($dir, $directions)) {
+            $dir = $this->_direction;
+        }
+
         $this->setData('_current_grid_direction', $dir);
         return $dir;
     }
@@ -316,13 +330,11 @@ class Toolbar extends Template
      */
     public function getPagerUrl($params = [])
     {
-        $urlParams = [
-            '_current' => true,
-            '_escape' => false,
-            '_use_rewrite' => true,
-            '_query' => array_merge($params, ['entity_id' => null])
-        ];
-
+        $urlParams = [];
+        $urlParams['_current'] = true;
+        $urlParams['_escape'] = false;
+        $urlParams['_use_rewrite'] = true;
+        $urlParams['_query'] = $params;
         return $this->getUrl('*/*/*', $urlParams);
     }
 
@@ -335,6 +347,67 @@ class Toolbar extends Template
     public function getPagerEncodedUrl($params = [])
     {
         return $this->urlEncoder->encode($this->getPagerUrl($params));
+    }
+
+    /**
+     * Retrieve current View mode
+     *
+     * @return string
+     */
+    public function getCurrentMode()
+    {
+
+        $mode = $this->_getData('_current_grid_mode');
+        if ($mode) {
+            return $mode;
+        }
+        $defaultMode = $this->_setListHelper->getDefaultViewMode($this->getModes());
+        $mode = $this->toolbarModel->getMode();
+        if (!$mode || !isset($this->_availableMode[$mode])) {
+            $mode = $defaultMode;
+        }
+
+        $this->setData('_current_grid_mode', $mode);
+        return $mode;
+    }
+
+    /**
+     * Compare defined view mode with current active mode
+     *
+     * @param string $mode
+     * @return bool
+     */
+    public function isModeActive($mode)
+    {
+        return $this->getCurrentMode() == $mode;
+    }
+
+    /**
+     * Retrieve available view modes
+     *
+     * @return array
+     */
+    public function getModes()
+    {
+        if ($this->_availableMode === []) {
+            $this->_availableMode = $this->_setListHelper->getAvailableViewMode();
+        }
+        return $this->_availableMode;
+    }
+
+    /**
+     * Set available view modes list
+     *
+     * @param array $modes
+     * @return $this
+     */
+    public function setModes($modes)
+    {
+        $this->getModes();
+        if (!isset($this->_availableMode)) {
+            $this->_availableMode = $modes;
+        }
+        return $this;
     }
 
     /**
@@ -408,10 +481,12 @@ class Toolbar extends Template
      */
     public function getDefaultPerPageValue()
     {
-        if ($default = $this->getDefaultGridPerPage()) {
+        if ($this->getCurrentMode() == 'list' && ($default = $this->getDefaultListPerPage())) {
+            return $default;
+        } elseif ($this->getCurrentMode() == 'grid' && ($default = $this->getDefaultGridPerPage())) {
             return $default;
         }
-        return 28;
+        return $this->_setListHelper->getDefaultLimitPerPageValue($this->getCurrentMode());
     }
 
     /**
@@ -455,11 +530,10 @@ class Toolbar extends Template
         $defaultLimit = $this->getDefaultPerPageValue();
         if (!$defaultLimit || !isset($limits[$defaultLimit])) {
             $keys = array_keys($limits);
-            $defaultLimit = $keys[0] ?? 10;
+            $defaultLimit = $keys[0];
         }
 
         $limit = $this->toolbarModel->getLimit();
-
         if (!$limit || !isset($limits[$limit])) {
             $limit = $defaultLimit;
         }
@@ -582,20 +656,21 @@ class Toolbar extends Template
      */
     public function getWidgetOptionsJson(array $customOptions = [])
     {
+        $defaultMode = $this->_setListHelper->getDefaultViewMode($this->getModes());
         $options = [
             'mode' => ToolbarModel::MODE_PARAM_NAME,
             'direction' => ToolbarModel::DIRECTION_PARAM_NAME,
             'order' => ToolbarModel::ORDER_PARAM_NAME,
             'limit' => ToolbarModel::LIMIT_PARAM_NAME,
-            'modeDefault' => 'grid',
+            'modeDefault' => $defaultMode,
             'directionDefault' => $this->_direction,
             'orderDefault' => $this->getOrderField(),
-            'limitDefault' => $this->getDefaultPerPageValue(),
+            'limitDefault' => $this->_setListHelper->getDefaultLimitPerPageValue($defaultMode),
             'url' => $this->getPagerUrl(),
             'formKey' => $this->formKey->getFormKey()
         ];
         $options = array_replace_recursive($options, $customOptions);
-        return json_encode(['productListToolbarForm' => $options]);
+        return json_encode(['entityListToolbarForm' => $options]);
     }
 
     /**

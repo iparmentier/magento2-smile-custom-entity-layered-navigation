@@ -30,9 +30,21 @@ use Magento\Store\Model\ScopeInterface;
  */
 class SetList
 {
-    public const XML_PATH_LIST_MODE = 'catalog/frontend/list_mode';
+    /**
+     * Configuration paths
+     */
+    public const XML_PATH_CUSTOM_ENTITY_LIST_MODE = 'custom_entity/storefront/list_mode';
+    public const XML_PATH_CUSTOM_ENTITY_SORT_FIELD = 'custom_entity/storefront/default_sort_by';
+    public const XML_PATH_DISPLAY_ENTITY_COUNT = 'custom_entity/layered_navigation/display_entity_count';
+
+    /**
+     * @var string Default sort direction for the entity list
+     */
     public const DEFAULT_SORT_DIRECTION = 'desc';
 
+    /**
+     * @var string
+     */
     public const VIEW_MODE_LIST = 'list';
     public const VIEW_MODE_GRID = 'grid';
 
@@ -72,7 +84,7 @@ class SetList
      */
     public function getAvailableViewMode()
     {
-        $value = $this->scopeConfig->getValue(self::XML_PATH_LIST_MODE, ScopeInterface::SCOPE_STORE);
+        $value = $this->scopeConfig->getValue(self::XML_PATH_CUSTOM_ENTITY_LIST_MODE, ScopeInterface::SCOPE_STORE);
 
         switch ($value) {
             case 'grid':
@@ -109,18 +121,11 @@ class SetList
     /**
      * Get default sort field
      *
-     * @FIXME Helper should be context-independent
      * @return null|string
      */
     public function getDefaultSortField()
     {
-        $currentAttributeSet = $this->coreRegistry->registry('current_attribute_set');
-        if ($currentAttributeSet) {
-            //return $currentAttributeSet->getDefaultSortBy();
-            return 'created_at';
-        }
-
-        return $this->scopeConfig->getValue(Config::XML_PATH_LIST_DEFAULT_SORT_BY, ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue(self::XML_PATH_CUSTOM_ENTITY_SORT_FIELD, ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -137,11 +142,11 @@ class SetList
             return $this->_defaultAvailableLimit;
         }
 
-        $perPageConfigPath = 'catalog/frontend/' . $viewMode . '_per_page_values';
+        $perPageConfigPath = 'custom_entity/storefront/' . $viewMode . '_per_page_values';
         $perPageValues = (string)$this->scopeConfig->getValue($perPageConfigPath, ScopeInterface::SCOPE_STORE);
         $perPageValues = explode(',', $perPageValues);
         $perPageValues = array_combine($perPageValues, $perPageValues);
-        if ($this->scopeConfig->isSetFlag('catalog/frontend/list_allow_all', ScopeInterface::SCOPE_STORE)) {
+        if ($this->scopeConfig->isSetFlag('custom_entity/storefront/list_allow_all', ScopeInterface::SCOPE_STORE)) {
             return ($perPageValues + ['all' => __('All')]);
         } else {
             return $perPageValues;
@@ -156,10 +161,20 @@ class SetList
      */
     public function getDefaultLimitPerPageValue($viewMode): int
     {
-        $xmlConfigPath = sprintf('catalog/frontend/%s_per_page', $viewMode);
+        $xmlConfigPath = sprintf('custom_entity/storefront/%s_per_page', $viewMode);
         $defaultLimit = $this->scopeConfig->getValue($xmlConfigPath, ScopeInterface::SCOPE_STORE);
 
         $availableLimits = $this->getAvailableLimit($viewMode);
         return (int)($availableLimits[$defaultLimit] ?? current($availableLimits));
+    }
+
+    /**
+     * Check if product count should be displayed in layered navigation
+     *
+     * @return bool
+     */
+    public function shouldDisplayEntityCountOnLayer(): bool
+    {
+        return $this->scopeConfig->isSetFlag(self::XML_PATH_DISPLAY_ENTITY_COUNT, ScopeInterface::SCOPE_STORE);
     }
 }

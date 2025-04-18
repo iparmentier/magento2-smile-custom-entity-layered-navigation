@@ -14,6 +14,19 @@ use Smile\CustomEntity\Model\CustomEntity;
 use Smile\CustomEntity\Block\Set\View as SmileCustomEntityView;
 use Amadeco\SmileCustomEntityLayeredNavigation\Model\Set\SetList\Toolbar as ToolbarModel;
 
+use Magento\Eav\Api\Data\AttributeSetInterface;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SearchCriteriaBuilderFactory;
+use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\RendererList;
+use Magento\Framework\View\Element\Template;
+use Smile\CustomEntity\Api\CustomEntityRepositoryInterface;
+use Smile\CustomEntity\Api\Data\CustomEntityInterface;
+use Smile\CustomEntity\Block\Html\Pager;
+
 /**
  * Attribute set view block.
  * Inherits from Smile_CustomEntity view block and adds specific logic.
@@ -21,6 +34,25 @@ use Amadeco\SmileCustomEntityLayeredNavigation\Model\Set\SetList\Toolbar as Tool
  */
 class View extends SmileCustomEntityView
 {
+    /**
+     * View constructor.
+     *
+     * @param Template\Context $context Context.
+     * @param Registry $registry Registry.
+     * @param CustomEntityRepositoryInterface $customEntityRepository Custom entity repository.
+     * @param SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory Search criteria builder factory.
+     * @param array $data Block data.
+     */
+    public function __construct(
+        Template\Context $context,
+        Registry $registry,
+        CustomEntityRepositoryInterface $customEntityRepository,
+        SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory,
+        array $data = []
+    ) {
+        parent::__construct($context, $registry, $customEntityRepository, $searchCriteriaBuilderFactory, $data);
+    }
+
     /**
      * Return entity list html
      *
@@ -38,7 +70,7 @@ class View extends SmileCustomEntityView
      */
     public function getAdditionalHtml()
     {
-        return $this->getChildHtml('additional');
+        return $this->getChildHtml('set_additional');
     }
 
     /**
@@ -59,7 +91,10 @@ class View extends SmileCustomEntityView
         $requestParams = array_keys($this->_request->getParams());
         $found = array_intersect($params, $requestParams);
 
-        return count($found) > 0;
+        if (count($found) > 0) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -70,11 +105,9 @@ class View extends SmileCustomEntityView
     public function getIdentities(): array
     {
         $identities = [];
-
         if ($attributeSet = $this->getAttributeSet()) {
             $identities[] = CustomEntity::CACHE_CUSTOM_ENTITY_SET_TAG . '_' . $attributeSet->getAttributeSetId();
         }
-
         return $identities;
     }
 }

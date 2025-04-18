@@ -109,6 +109,16 @@ class Navigation extends Template
     }
 
     /**
+     * Get all layer filters
+     *
+     * @return array
+     */
+    public function getFilters()
+    {
+        return $this->filterList->getFilters($this->_entityLayer);
+    }
+
+    /**
      * Check availability display layer block
      *
      * @return bool
@@ -117,16 +127,6 @@ class Navigation extends Template
     {
         return $this->getLayer()->getCurrentAttributeSet()
             && $this->visibilityFlag->isEnabled($this->getLayer(), $this->getFilters());
-    }
-
-    /**
-     * Get all layer filters
-     *
-     * @return array
-     */
-    public function getFilters()
-    {
-        return $this->filterList->getFilters($this->_entityLayer);
     }
 
     /**
@@ -153,16 +153,5 @@ class Navigation extends Template
             $collection = $this->getLayer()->getEntityCollection();
             $toolbarBlock->setCollection($collection);
         }
-    }
-
-    /**
-     * Get block identities
-     * Relies on the Layer model to provide state-dependent cache tags.
-     *
-     * @return string[]
-     */
-    public function getIdentities(): array
-    {
-        return $this->getLayer()->getStateTags();
     }
 }

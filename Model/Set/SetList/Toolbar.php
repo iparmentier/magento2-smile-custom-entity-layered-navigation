@@ -18,9 +18,6 @@ namespace Amadeco\SmileCustomEntityLayeredNavigation\Model\Set\SetList;
 
 /**
  * Class Toolbar
- *
- * @api
- * @since 100.0.2
  */
 class Toolbar
 {
@@ -32,22 +29,22 @@ class Toolbar
     /**
      * Sort order cookie name
      */
-    public const ORDER_PARAM_NAME = 'product_list_order';
+    public const ORDER_PARAM_NAME = 'set_list_order';
 
     /**
      * Sort direction cookie name
      */
-    public const DIRECTION_PARAM_NAME = 'product_list_dir';
+    public const DIRECTION_PARAM_NAME = 'set_list_dir';
 
     /**
      * Sort mode cookie name
      */
-    public const MODE_PARAM_NAME = 'product_list_mode';
+    public const MODE_PARAM_NAME = 'set_list_mode';
 
     /**
-     * Products per page limit order cookie name
+     * Entities per page limit order cookie name
      */
-    public const LIMIT_PARAM_NAME = 'product_list_limit';
+    public const LIMIT_PARAM_NAME = 'set_list_limit';
 
     /**
      * Request

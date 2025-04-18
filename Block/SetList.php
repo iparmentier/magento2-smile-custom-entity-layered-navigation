@@ -16,8 +16,8 @@ declare(strict_types=1);
 
 namespace Amadeco\SmileCustomEntityLayeredNavigation\Block;
 
-use Magento\Framework\Registry;
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Data\Helper\PostHelper;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Eav\Api\Data\AttributeSetInterface;
@@ -52,14 +52,14 @@ class SetList extends Template implements IdentityInterface
 
     /**
      * @param Template\Context $context
-     * @param Registry $registry
+     * @param PostHelper $postDataHelper
      * @param CustomEntityCollectionFactory $customEntityCollectionFactory
      * @param LayerResolver $layerResolver
      * @param array $data Block data.
      */
     public function __construct(
         protected Context $context,
-        private Registry $registry,
+        protected PostHelper $postDataHelper,
         private CustomEntityCollectionFactory $customEntityCollectionFactory,
         private LayerResolver $layerResolver,
         array $data = []
@@ -141,8 +141,8 @@ class SetList extends Template implements IdentityInterface
     }
 
     /**
-     * Get listing mode for products if toolbar is removed from layout.
-     * Use the general configuration for product list mode from config path catalog/frontend/list_mode as default value
+     * Get listing mode for entities if toolbar is removed from layout.
+     * Use the general configuration for entity list mode from config path catalog/custom_entity/list_mode as default value
      * or mode data from block declaration from layout.
      *
      * @return string
@@ -352,7 +352,14 @@ class SetList extends Template implements IdentityInterface
     {
         $layer = $this->getLayer();
         $collection = $layer->getEntityCollection();
+
         $this->prepareSortableFieldsBySet($layer->getCurrentAttributeSet());
+
+        $this->_eventManager->dispatch(
+            'amadeco_block_set_list_collection',
+            ['collection' => $collection]
+        );
+
         return $collection;
     }
 
