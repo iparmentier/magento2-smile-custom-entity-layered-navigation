@@ -19,7 +19,7 @@
     <body>
         <referenceBlock name="smile_custom_entity_list_pager" remove="true" />
         <referenceBlock name="smile_custom_entity_set_view" template="Amadeco_SmileCustomEntityLayeredNavigation::set/view.phtml">
-            <container name="custom.entity.additional" as="additional" />
+            <container name="custom.entity.set.additional" as="set_additional" />
             <block class="Amadeco\SmileCustomEntityLayeredNavigation\Block\SetList" name="set.list" as="set_list" template="Amadeco_SmileCustomEntityLayeredNavigation::set/list.phtml" after="custom.entity.additional">
                 <container name="set.list.additional" as="additional" />
                 <block class="Amadeco\SmileCustomEntityLayeredNavigation\Block\SetList\Toolbar" name="set_list_toolbar" template="Amadeco_SmileCustomEntityLayeredNavigation::set/list/toolbar.phtml">
