@@ -7,8 +7,6 @@
 
 [SPONSOR: Amadeco](https://www.amadeco.fr)
 
-## Overview
-
 The Amadeco SmileCustomEntityLayeredNavigation module enhances Magento 2 by adding layered navigation (faceted search) capabilities to Smile Custom Entities. This module mirrors Magento 2's native layered navigation behavior, applying the same familiar filtering interface to custom entities. It enables customers to filter custom entity collections through an intuitive interface, improving the user experience and helping them find relevant content more efficiently.
 
 ## Features
