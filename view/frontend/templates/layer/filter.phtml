@@ -1,0 +1,37 @@
+<?php
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/OSL-3.0
+ *
+ * @category  Amadeco
+ * @package   Amadeco_SmileCustomEntityLayeredNavigation
+ * @copyright Copyright (c) Amadeco (https://www.amadeco.fr) - Ilan Parmentier
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ */
+
+/**
+ * @var \Amadeco\SmileCustomEntityLayeredNavigation\Block\Navigation\FilterRenderer $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$filterItems = $filterItems ?? [];
+
+?>
+<?php if (!empty($filterItems)): ?>
+    <ol class="items filter-items">
+        <?php foreach ($filterItems as $filterItem): ?>
+            <li class="item filter-item">
+                <a href="<?= $escaper->escapeUrl($filterItem->getUrl()) ?>" rel="nofollow" class="filter-item-link">
+                    <span class="label"><?= $escaper->escapeHtml($filterItem->getLabel()) ?></span>
+                    <?php if ($filterItem->getCount() > 0): ?>
+                        <span class="count filter-count"><?= $escaper->escapeHtml($filterItem->getCount()) ?> <span class="filter-count-label"><?= $escaper->escapeHtml(__('item(s)')) ?></span></span>
+                    <?php endif ?>
+                </a>
+            </li>
+        <?php endforeach ?>
+    </ol>
+<?php endif ?>

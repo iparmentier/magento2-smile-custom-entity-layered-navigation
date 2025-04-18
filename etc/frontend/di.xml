@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/OSL-3.0
+ *
+ * @category  Amadeco
+ * @package   Amadeco_SmileCustomEntityLayeredNavigation
+ * @copyright Copyright (c) Amadeco (https://www.amadeco.fr) - Ilan Parmentier
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\AvailabilityFlagInterface"
+                type="Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\AvailabilityFlag"/>
+    <preference for="Smile\CustomEntity\Block\Set\View"
+                type="Amadeco\SmileCustomEntityLayeredNavigation\Block\Set\View"/>
+
+    <type name="Smile\CustomEntity\Controller\Set\View">
+        <plugin name="Amadeco_SmileCustomEntityLayeredNavigation::addLayeredNavigation"
+                type="Amadeco\SmileCustomEntityLayeredNavigation\Plugin\Controller\Set\ViewPlugin"
+                sortOrder="10"/>
+        <plugin name="Amadeco_SmileCustomEntityLayeredNavigation::metaRobotsPlugin"
+                type="Amadeco\SmileCustomEntityLayeredNavigation\Plugin\MetaRobotsPlugin"
+                sortOrder="20"/>
+    </type>
+
+    <virtualType name="Amadeco\SmileCustomEntityLayeredNavigation\Block\Navigation\FilterRendererFactory"
+                type="Magento\Framework\View\Element\BlockFactory">
+        <arguments>
+            <argument name="blockClassName" xsi:type="string">Amadeco\SmileCustomEntityLayeredNavigation\Block\Navigation\FilterRenderer</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amadeco\SmileCustomEntityLayeredNavigation\Block\Navigation">
+        <arguments>
+            <argument name="filterRenderer" xsi:type="object">Amadeco\SmileCustomEntityLayeredNavigation\Block\Navigation\FilterRendererFactory</argument>
+        </arguments>
+    </type>
+</config>

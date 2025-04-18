@@ -1,0 +1,44 @@
+<?php
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/OSL-3.0
+ *
+ * @category  Amadeco
+ * @package   Amadeco_SmileCustomEntityLayeredNavigation
+ * @copyright Copyright (c) Amadeco (https://www.amadeco.fr) - Ilan Parmentier
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ */
+
+/**
+ * Product list toolbar
+ *
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Catalog\Block\Product\ProductList\Toolbar $block
+ */
+?>
+<?php if ($block->getCollection()->getSize()) : ?>
+    <?php
+        $widget = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonDecode($block->getWidgetOptionsJson());
+        $widgetOptions = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode($widget['productListToolbarForm']);
+    ?>
+    <?php if ($block->getIsBottom()) : ?>
+        <?php if ($pagerHtml = trim($block->getPagerHtml())) : ?>
+        <div class="toolbar toolbar-products toolbar-bottom" data-mage-init='{"productListToolbarForm": <?= /** @noEscape */ $widgetOptions ?>}' role="toolbar">
+            <?= /** @noEscape */ $pagerHtml ?>
+            <?= $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>
+        </div>
+        <?php endif ?>
+    <?php else : ?>
+    <div class="toolbar toolbar-products" data-mage-init='{"productListToolbarForm": <?= /** @noEscape */ $widgetOptions ?>}' role="toolbar">
+        <?= $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
+        <?= $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
+        <?php if ($block->isExpanded()) : ?>
+            <?= $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
+        <?php endif ?>
+    </div>
+    <?php endif ?>
+<?php endif ?>

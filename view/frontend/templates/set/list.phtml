@@ -1,0 +1,33 @@
+<?php
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/OSL-3.0
+ *
+ * @category  Amadeco
+ * @package   Amadeco_SmileCustomEntityLayeredNavigation
+ * @copyright Copyright (c) Amadeco (https://www.amadeco.fr) - Ilan Parmentier
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ */
+
+/** @var \Amadeco\SmileCustomEntity\Block\ListSet $block */
+$_entityCollection = $block->getLoadedEntityCollection();
+?>
+<?= $block->getToolbarHtml() ?>
+<?= $block->getAdditionalHtml() ?>
+
+<div class="products wrapper products-grid">
+    <ol class="products list items product-items">
+        <?php foreach ($_entityCollection as $entity) : ?>
+            <li class="item product product-item">
+                <?= $block->getParentBlock()->getEntityHtml($entity) ?>
+            </li>
+        <?php endforeach ?>
+    </ol>
+</div>
+
+<?= $block->getChildBlock('toolbar')->setIsBottom(true)->toHtml() ?>
+<?php // phpcs:ignore Magento2.Legacy.PhtmlTemplate ?>

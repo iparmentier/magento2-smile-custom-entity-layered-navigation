@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/OSL-3.0
+ *
+ * @category  Amadeco
+ * @package   Amadeco_SmileCustomEntityLayeredNavigation
+ * @copyright Copyright (c) Amadeco (https://www.amadeco.fr) - Ilan Parmentier
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Mview/etc/mview.xsd">
+    <view id="amadeco_smile_custom_entity_layer_set"
+          class="Amadeco\SmileCustomEntityLayeredNavigation\Model\Indexer\CustomEntity\Layered"
+          group="indexer">
+        <subscriptions>
+            <table name="smile_custom_entity" entity_column="entity_id" />
+            <table name="smile_custom_entity_eav_attribute" entity_column="attribute_id" />
+            <table name="smile_custom_entity_int" entity_column="entity_id" />
+            <table name="smile_custom_entity_varchar" entity_column="entity_id" />
+            <table name="smile_custom_entity_text" entity_column="entity_id" />
+            <table name="smile_custom_entity_decimal" entity_column="entity_id" />
+            <table name="smile_custom_entity_datetime" entity_column="entity_id" />
+            <table name="eav_attribute" entity_column="attribute_id" />
+            <table name="eav_attribute_option" entity_column="option_id" />
+            <table name="eav_attribute_option_value" entity_column="value_id" />
+        </subscriptions>
+    </view>
+</config>

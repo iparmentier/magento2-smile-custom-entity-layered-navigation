@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/OSL-3.0
+ *
+ * @category  Amadeco
+ * @package   Amadeco_SmileCustomEntityLayeredNavigation
+ * @copyright Copyright (c) Amadeco (https://www.amadeco.fr) - Ilan Parmentier
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\ContextInterface"
+                type="Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\Context"/>
+    <preference for="Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\ItemCollectionProviderInterface"
+                type="Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\ItemCollectionProvider"/>
+    <preference for="Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\StateKeyInterface"
+                type="Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\StateKey"/>
+    <preference for="Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\CollectionFilterInterface"
+                type="Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\CollectionFilter"/>
+
+    <virtualType name="AmadecoCustomEntityLayerContext" type="Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\Context">
+        <arguments>
+            <argument name="collectionProvider" xsi:type="object">Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\ItemCollectionProvider</argument>
+            <argument name="stateKey" xsi:type="object">Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\StateKey</argument>
+            <argument name="collectionFilter" xsi:type="object">Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\CollectionFilter</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer">
+        <arguments>
+            <argument name="context" xsi:type="object">AmadecoCustomEntityLayerContext</argument>
+        </arguments>
+    </type>
+
+    <type name="Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\FilterList">
+        <arguments>
+            <argument name="filters" xsi:type="array">
+                <item name="attribute" xsi:type="string">Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\Filter\Attribute</item>
+                <item name="boolean" xsi:type="string">Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\Filter\Boolean</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Smile\CustomEntity\Model\CustomEntity\Attribute">
+        <plugin name="Amadeco_SmileCustomEntityLayeredNavigation::addAttributes"
+                type="Amadeco\SmileCustomEntityLayeredNavigation\Plugin\CustomEntityAttributePlugin"
+                sortOrder="10" />
+    </type>
+</config>

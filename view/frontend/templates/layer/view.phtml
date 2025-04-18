@@ -1,0 +1,44 @@
+<?php
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/OSL-3.0
+ *
+ * @category  Amadeco
+ * @package   Amadeco_SmileCustomEntityLayeredNavigation
+ * @copyright Copyright (c) Amadeco (https://www.amadeco.fr) - Ilan Parmentier
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ */
+
+/**
+ * @var \Amadeco\SmileCustomEntityLayeredNavigation\Block\Navigation $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<?php if ($block->canShowBlock()): ?>
+    <div class="block filter" id="amadeco-custom-entity-filters" data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false, "collateral": { "openedState": "filter-active", "element": "body" } }}'>
+        <div class="block-title filter-title" data-role="title">
+            <strong role="heading" aria-level="2"><?= $escaper->escapeHtml(__('Shop By')) ?></strong>
+        </div>
+        <div class="block-content filter-content" data-role="content">
+            <?= /* @noEscape */ $block->getChildHtml('state') ?>
+
+            <?php $filters = $block->getFilters(); ?>
+            <?php if (!empty($filters)): ?>
+                <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?= $escaper->escapeHtml(__('Shopping Options')) ?></strong>
+                <dl class="filter-options" id="narrow-by-list">
+                    <?php foreach ($filters as $filter): ?>
+                        <?php if ($filter->getItemsCount()): ?>
+                            <dt role="heading" aria-level="3" class="filter-options-title"><?= $escaper->escapeHtml(__($filter->getName())) ?></dt>
+                            <dd class="filter-options-content"><?= /* @noEscape */ $block->getFilterHtml($filter) ?></dd>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                </dl>
+            <?php endif ?>
+        </div>
+    </div>
+<?php endif ?>

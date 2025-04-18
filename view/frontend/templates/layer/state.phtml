@@ -1,0 +1,44 @@
+<?php
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/OSL-3.0
+ *
+ * @category  Amadeco
+ * @package   Amadeco_SmileCustomEntityLayeredNavigation
+ * @copyright Copyright (c) Amadeco (https://www.amadeco.fr) - Ilan Parmentier
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ */
+
+/**
+ * @var \Amadeco\SmileCustomEntityLayeredNavigation\Block\Navigation\State $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<?php $filters = $block->getActiveFilters(); ?>
+<?php if (!empty($filters)): ?>
+<div class="filter-current" data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false}}'>
+    <strong role="heading" aria-level="2" class="block-subtitle filter-current-subtitle"><?= $escaper->escapeHtml(__('Now Shopping by')) ?></strong>
+    <ol class="items">
+        <?php foreach ($filters as $filter): ?>
+            <li class="item">
+                <span class="filter-label"><?= $escaper->escapeHtml(__($filter->getFilter()->getName())) ?></span>
+                <span class="filter-value"><?= /* @noEscape */ $filter->getLabel() ?></span>
+                <a class="action remove"
+                   href="<?= $escaper->escapeUrl($filter->getRemoveUrl()) ?>"
+                   title="<?= $escaper->escapeHtmlAttr(__('Remove %1', $filter->getLabel())) ?>">
+                    <span><?= $escaper->escapeHtml(__('Remove This Item')) ?></span>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ol>
+    <div class="actions">
+        <a href="<?= $escaper->escapeUrl($block->getClearUrl()) ?>" class="action clear filter-clear">
+            <span><?= $escaper->escapeHtml(__('Clear All')) ?></span>
+        </a>
+    </div>
+</div>
+<?php endif; ?>

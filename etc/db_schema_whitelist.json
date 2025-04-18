@@ -1,0 +1,29 @@
+{
+    "amadeco_smile_custom_entity_set_idx": {
+        "column": {
+            "idx_id": true,
+            "entity_id": true,
+            "attribute_id": true,
+            "store_id": true,
+            "value": true
+        },
+        "index": {
+            "AMADECO_SMILE_CUSTOM_ENTITY_SET_IDX_STORE_ID_ATTRIBUTE_ID_VALUE": true,
+            "AMADECO_SMILE_CUSTOM_ENTT_SET_IDX_ENTT_ID_ATTR_ID_STORE_ID_VAL": true,
+            "AMADECO_SMILE_CUSTOM_ENTITY_SET_IDX_ATTRIBUTE_ID": true,
+            "AMADECO_SMILE_CUSTOM_ENTITY_SET_IDX_STORE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_EB06A3E5B5F9189562DB108B2E632391": true,
+            "AMADECO_SMILE_CUSTOM_ENTT_SET_IDX_ATTR_ID_EAV_ATTR_ATTR_ID": true,
+            "AMADECO_SMILE_CUSTOM_ENTITY_SET_IDX_STORE_ID_STORE_STORE_ID": true
+        }
+    },
+    "smile_custom_entity_eav_attribute": {
+        "column": {
+            "is_filterable": true,
+            "position": true
+        }
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "name": "amadeco/module-smile-custom-entity-layered-navigation",
+    "type": "magento2-module",
+    "license": [
+        "OSL-3.0"
+    ],
+    "description": "Amadeco customizations and Layered Navigation for Smile Custom Entity",
+    "authors": [
+        {
+            "name": "Ilan Parmentier",
+            "email": "dev@amadeco.fr"
+        }
+    ],
+    "keywords": [
+        "magento",
+        "magento2",
+        "elasticsuite",
+        "smile custom entity",
+        "layered navigation",
+        "catalog navigation"
+    ],
+    "require": {
+        "magento/framework": "*",
+        "magento/module-catalog": "*",
+        "magento/module-eav": "*",
+        "magento/module-layered-navigation": "*",
+        "smile/module-custom-entity": "^1.3",
+        "smile/module-scoped-eav": "^1.3"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amadeco\\SmileCustomEntityLayeredNavigation\\": ""
+        }
+    }
+}
