@@ -45,6 +45,6 @@ class Filter implements ArgumentInterface
      */
     public function shouldDisplayEntityCountOnLayer(): bool
     {
-        return true;
+        return $this->setListHelper->shouldDisplayEntityCountOnLayer();
     }
 }
