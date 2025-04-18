@@ -38,7 +38,7 @@ class View extends SmileCustomEntityView
      */
     public function getAdditionalHtml()
     {
-        return $this->getChildHtml('additional');
+        return $this->getChildHtml('set_additional');
     }
 
     /**
