@@ -319,18 +319,21 @@ class SetList extends Template implements IdentityInterface
     {
         $identities = [];
 
-        $entity = $this->getLayer()->getCurrentAttributeSet();
-        if ($entity) {
-            $identities[] = CustomEntity::CACHE_CUSTOM_ENTITY_SET_TAG . '_' . $entity->getAttributeSetId();
+        $attributeSet = $this->getLayer()->getCurrentAttributeSet();
+        if ($attributeSet) {
+            $identities[] = CustomEntity::CACHE_CUSTOM_ENTITY_SET_TAG . '_' . $attributeSet->getAttributeSetId();
         }
 
         foreach ($this->_getEntityCollection() as $entity) {
-            $identities[] = $item->getIdentities();
+            $entityIdentities = $entity->getIdentities();
+            if ($entityIdentities) {
+                foreach ($entityIdentities as $identity) {
+                    $identities[] = $identity;
+                }
+            }
         }
 
-        $identities = array_merge([], ...$identities);
-
-        return $identities;
+        return array_unique($identities);
     }
 
     /**
