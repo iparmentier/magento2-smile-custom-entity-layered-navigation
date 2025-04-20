@@ -325,7 +325,7 @@ class SetList extends Template implements IdentityInterface
         }
 
         foreach ($this->_getEntityCollection() as $entity) {
-            $identities[] = $item->getIdentities();
+            $identities[] = $entity->getIdentities();
         }
 
         $identities = array_merge([], ...$identities);
