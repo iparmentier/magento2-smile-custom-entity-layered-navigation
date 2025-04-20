@@ -34,8 +34,7 @@
                 </field>
                 <field id="grid_per_page" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Products per Page on Grid Default Value</label>
-                    <validate>validate-number</validate>
-                    <validate>validate-per-page-value</validate>
+                    <validate>validate-number validate-per-page-value</validate>
                 </field>
                 <field id="list_per_page_values" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Products per Page on List Allowed Values</label>
@@ -44,8 +43,7 @@
                 </field>
                 <field id="list_per_page" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Products per Page on List Default Value</label>
-                    <validate>validate-number</validate>
-                    <validate>validate-per-page-value</validate>
+                    <validate>validate-number validate-per-page-value</validate>
                 </field>
                 <field id="list_allow_all" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Allow All Products per Page</label>
