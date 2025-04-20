@@ -319,9 +319,9 @@ class SetList extends Template implements IdentityInterface
     {
         $identities = [];
 
-        $entity = $this->getLayer()->getCurrentAttributeSet();
-        if ($entity) {
-            $identities[] = CustomEntity::CACHE_CUSTOM_ENTITY_SET_TAG . '_' . $entity->getAttributeSetId();
+        $set = $this->getLayer()->getCurrentAttributeSet();
+        if ($set) {
+            $identities[] = CustomEntity::CACHE_CUSTOM_ENTITY_SET_TAG . '_' . $set->getAttributeSetId();
         }
 
         foreach ($this->_getEntityCollection() as $entity) {
