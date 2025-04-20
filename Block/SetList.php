@@ -328,8 +328,6 @@ class SetList extends Template implements IdentityInterface
             $identities[] = $entity->getIdentities();
         }
 
-        $identities = array_merge([], ...$identities);
-
         return $identities;
     }
 
