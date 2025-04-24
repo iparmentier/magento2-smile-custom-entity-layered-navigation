@@ -66,17 +66,11 @@ class Layered implements IndexerActionInterface, MviewActionInterface
     private $indexMutex;
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * @param Layered\Action\FullFactory $fullActionFactory
      * @param Layered\Action\RowsFactory $rowsActionFactory
      * @param IndexerRegistry $indexerRegistry
      * @param CacheContext $cacheContext
      * @param IndexMutexInterface $indexMutex
-     * @param LoggerInterface $logger
      * @param string $indexerId
      */
     public function __construct(
@@ -85,7 +79,6 @@ class Layered implements IndexerActionInterface, MviewActionInterface
         IndexerRegistry $indexerRegistry,
         CacheContext $cacheContext,
         IndexMutexInterface $indexMutex,
-        LoggerInterface $logger,
         string $indexerId = self::INDEXER_ID
     ) {
         $this->fullActionFactory = $fullActionFactory;
@@ -93,7 +86,6 @@ class Layered implements IndexerActionInterface, MviewActionInterface
         $this->indexerRegistry = $indexerRegistry;
         $this->cacheContext = $cacheContext;
         $this->indexMutex = $indexMutex;
-        $this->logger = $logger;
         $this->indexerId = $indexerId;
     }
 
@@ -105,13 +97,8 @@ class Layered implements IndexerActionInterface, MviewActionInterface
      */
     public function execute($ids)
     {
-        try {
-            $this->executeAction($ids);
-            $this->registerEntities($ids);
-        } catch (\Exception $e) {
-            $this->logger->error('Error during indexing specific entities: ' . $e->getMessage(), ['exception' => $e]);
-            throw new LocalizedException(__('Could not rebuild index for specified entities: %1', $e->getMessage()), $e);
-        }
+        $this->executeAction($ids);
+        $this->registerEntities($ids);
     }
 
     /**
@@ -122,24 +109,14 @@ class Layered implements IndexerActionInterface, MviewActionInterface
     public function executeFull()
     {
         $indexer = $this->indexerRegistry->get($this->indexerId);
-
-        if ($indexer->isScheduled()) {
-            // Skip manual reindex if indexer is in scheduled mode
-            return;
-        }
-
-        try {
-            $this->indexMutex->execute(
-                $this->indexerId,
-                function () {
-                    $this->fullActionFactory->create()->execute();
-                    $this->registerTags();
-                }
-            );
-        } catch (\Exception $e) {
-            $this->logger->error('Error during full reindex: ' . $e->getMessage(), ['exception' => $e]);
-            throw new LocalizedException(__('Could not rebuild index for all entities: %1', $e->getMessage()), $e);
-        }
+        
+        $this->indexMutex->execute(
+            $this->indexerId,
+            function () {
+                $this->fullActionFactory->create()->execute();
+                $this->registerTags();
+            }
+        );
     }
 
     /**
@@ -150,15 +127,7 @@ class Layered implements IndexerActionInterface, MviewActionInterface
      */
     public function executeList(array $ids)
     {
-        try {
-            $this->executeAction($ids);
-        } catch (\Exception $e) {
-            $this->logger->error('Error during executing mview by ID list: ' . $e->getMessage(), [
-                'exception' => $e,
-                'ids' => implode(', ', $ids)
-            ]);
-            throw new LocalizedException(__('Could not rebuild index for the specified entities: %1', $e->getMessage()), $e);
-        }
+        $this->executeAction($ids);
     }
 
     /**
@@ -186,11 +155,7 @@ class Layered implements IndexerActionInterface, MviewActionInterface
 
         $ids = array_unique($ids);
         $indexer = $this->indexerRegistry->get($this->indexerId);
-
-        if (!$indexer->isScheduled()) {
-            $this->rowsActionFactory->create()->execute($ids);
-        }
-
+        $this->rowsActionFactory->create()->execute($ids);
         return $this;
     }
 
