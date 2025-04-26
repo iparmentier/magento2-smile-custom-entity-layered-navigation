@@ -80,15 +80,20 @@ class MetaRobotsPlugin
         $controllerName = $this->request->getControllerName();
         return $moduleName === 'custom_entity' && $controllerName === 'set';
     }
-
+    
     /**
      * Check if filters are applied to the current page
      *
+     * @param ResultInterface $resultPage
      * @return bool
      */
     private function hasAppliedFilters($resultPage): bool
     {
-        $state = $resultPage->getLayout()->getBlock('set.layer.state');
+        $layout = $resultPage->getLayout();
+        if (!$layout) {
+            return false;
+        }
+        $state = $layout->getBlock('set.layer.state');
         if ($state && $state->getActiveFilters()) {
             return true;
         }
