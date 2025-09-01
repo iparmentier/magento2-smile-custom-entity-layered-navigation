@@ -15,10 +15,16 @@
 
 /**
  * Attribute set frontend view block
+ *
  * @var \Amadeco\SmileCustomEntity\Block\Set\View $block
+ * @var \Amadeco\SmileCustomEntityLayeredNavigation\ViewModel\IsEntityFiltered $isEntityFilteredModel
  */
+$isEntityFilteredModel = $block->getData('is_entity_filtered_model');
 ?>
-<?php if ($block->isFilteredEntity() === false) : ?>
+<?php if (
+    !$isEntityFilteredModel ||
+    ($isEntityFilteredModel && !$isEntityFilteredModel->isFiltered())
+): ?>
     <?= $block->getAdditionalHtml() ?>
 <?php endif ?>
 
