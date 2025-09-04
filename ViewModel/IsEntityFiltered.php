@@ -14,40 +14,46 @@
  */
 declare(strict_types=1);
 
-namespace Amadeco\SmileCustomEntityLayeredNavigation\ViewModel;
+namespace Artbambou\EntityDescription\ViewModel;
 
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\App\RequestInterface;
-use Magento\Catalog\Model\Layer;
-use Magento\Catalog\Model\Layer\Resolver;
+use Magento\Catalog\Model\Layer as CatalogLayer;
+use Magento\Catalog\Model\Layer\Resolver as CatalogLayerResolver;
 use Amadeco\SmileCustomEntityLayeredNavigation\Block\SetList as EntitiesPager;
 use Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer as EntitiesLayer;
+use Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\Resolver as EntitiesLayerResolver;
+use Amadeco\SmileCustomEntityLayeredNavigation\Model\Layer\FilterList as EntitiesFilterList;
 use Amadeco\SmileCustomEntityLayeredNavigation\Model\Set\SetList\Toolbar as ToolbarModel;
 use Magento\Theme\Block\Html\Pager as ProductsPager;
 
 class IsEntityFiltered implements ArgumentInterface
 {
-    private Layer $catalogLayer;
+    private CatalogLayer $catalogLayer;
+    private EntitiesLayer $entitiesLayer;
 
     /**
-     * @param RequestInterface $request
-     * @param Resolver $layerResolver
-     * @param ProductsPager $productsPager
-     * @param EntitiesPager $entitiesPager
-     * @param EntitiesLayer $entitiesLayer
+     * @param RequestInterface      $request
+     * @param CatalogLayerResolver  $layerResolver
+     * @param ProductsPager         $productsPager
+     * @param EntitiesPager         $entitiesPager
+     * @param EntitiesLayerResolver $entitiesLayerResolver
+     * @param EntitiesFilterList    $filterList
      */
     public function __construct(
         private RequestInterface $request,
-        private Resolver $layerResolver,
+        private CatalogLayerResolver $layerResolver,
         private ProductsPager $productsPager,
         private EntitiesPager $entitiesPager,
-        private EntitiesLayer $entitiesLayer
+        private EntitiesLayerResolver $entitiesLayerResolver,
+        private EntitiesFilterList $filterList
     ) {
-        $this->request = $request;
-        $this->catalogLayer = $layerResolver->get();
+        $this->request       = $request;
+        $this->catalogLayer  = $layerResolver->get();
         $this->productsPager = $productsPager;
         $this->entitiesPager = $entitiesPager;
-        $this->entitiesLayer = $entitiesLayer;
+        $this->entitiesLayer = $entitiesLayerResolver->get();
+        $this->filterList    = $filterList;
     }
 
     /**
@@ -68,10 +74,18 @@ class IsEntityFiltered implements ArgumentInterface
         $requestParams = array_keys($this->request->getParams());
         $found = array_intersect($params, $requestParams);
 
+        $entityFiltersApplied = false;
+        foreach ($this->filterList->getFilters($this->entitiesLayer) as $filter) {
+            if ($this->request->getParam($filter->getRequestVar()) !== null) {
+                $entityFiltersApplied = true;
+                break;
+            }
+        }
+
         return (
             count($found) > 0 ||
             count($this->catalogLayer->getState()->getFilters()) > 0 ||
-            count($this->entitiesLayer->getState()->getFilters()) > 0
+            $entityFiltersApplied
         );
     }
 }
