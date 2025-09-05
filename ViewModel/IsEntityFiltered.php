@@ -14,7 +14,7 @@
  */
 declare(strict_types=1);
 
-namespace Artbambou\EntityDescription\ViewModel;
+namespace Amadeco\SmileCustomEntityLayeredNavigation\ViewModel;
 
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\App\RequestInterface;
