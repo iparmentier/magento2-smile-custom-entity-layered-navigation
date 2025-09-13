@@ -21,12 +21,7 @@
  */
 $isEntityFilteredModel = $block->getData('is_entity_filtered_model');
 ?>
-<?php if (
-    !$isEntityFilteredModel ||
-    ($isEntityFilteredModel && !$isEntityFilteredModel->isFiltered())
-): ?>
-    <?= $block->getAdditionalHtml() ?>
-<?php endif ?>
+<?= $block->getAdditionalHtml() ?>
 
 <div class="page-products">
     <?= $block->getEntityListHtml() ?>
